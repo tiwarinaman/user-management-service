@@ -4,10 +4,9 @@ import com.techienaman.usermanagementservice.model.User;
 import com.techienaman.usermanagementservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v0/user")
@@ -20,9 +19,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @GetMapping
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PostMapping
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.saveUser(user));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+        return ResponseEntity.ok(userService.updateUserDetails(user, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.ok("User successfully deleted");
     }
 
 }
