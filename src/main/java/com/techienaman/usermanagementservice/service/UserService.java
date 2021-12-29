@@ -1,6 +1,6 @@
 package com.techienaman.usermanagementservice.service;
 
-import com.techienaman.usermanagementservice.exception.DuplicateMobileNumber;
+import com.techienaman.usermanagementservice.exception.DuplicateMobileNumberException;
 import com.techienaman.usermanagementservice.exception.UserNotFoundException;
 import com.techienaman.usermanagementservice.model.User;
 import com.techienaman.usermanagementservice.repository.UserRepository;
@@ -26,7 +26,7 @@ public class UserService {
                 userRepository.findUserByMobileNumber(user.getMobileNumber());
 
         if (userOptional.isPresent()) {
-            throw new DuplicateMobileNumber("Mobile Number already taken");
+            throw new DuplicateMobileNumberException("Mobile Number already taken");
         }
 
         return userRepository.save(user);
@@ -52,7 +52,7 @@ public class UserService {
                     userRepository.findUserByMobileNumber(user.getMobileNumber());
 
             if (userOptional.isPresent()) {
-                throw new DuplicateMobileNumber("Mobile already taken");
+                throw new DuplicateMobileNumberException("Mobile already taken");
             }
             userDetails.setMobileNumber(user.getMobileNumber());
         }
